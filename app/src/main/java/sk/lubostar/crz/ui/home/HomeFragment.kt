@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.coroutines.runBlocking
 import sk.lubostar.crz.R
 
 class HomeFragment : Fragment() {
@@ -21,6 +22,11 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(this, Observer {
             textView.text = it
         })
+
+//        runBlocking {
+//            homeViewModel.refreshContracts()
+//        }
+
         return root
     }
 }

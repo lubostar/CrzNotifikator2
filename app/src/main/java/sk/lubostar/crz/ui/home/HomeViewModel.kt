@@ -9,7 +9,7 @@ import sk.lubostar.crz.network.model.Contract
 
 class HomeViewModel : ViewModel() {
     val contracts: LiveData<List<Contract>> get() = _contracts
-    private val _contracts = MutableLiveData<List<Contract>>()
+    private val _contracts = MutableLiveData<List<Contract>>(getFakeData())
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
@@ -22,4 +22,11 @@ class HomeViewModel : ViewModel() {
 //        _contracts.value = result
 //        _text.value = "There is " + result.size + " contracts"
 //    }
+
+    fun getFakeData() :List<Contract>{
+        return listOf(
+            Contract(1, "001", "MinV", "Fero",
+            "Prenajom vozidiel", "22. Apr 2020", 2.0, 200.0)
+        )
+    }
 }

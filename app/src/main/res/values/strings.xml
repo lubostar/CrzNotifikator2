@@ -13,4 +13,6 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_search">Send</string>
+
+    <string name="card_calendar_icon_desc">The date when the contract was signed</string>
 </resources>

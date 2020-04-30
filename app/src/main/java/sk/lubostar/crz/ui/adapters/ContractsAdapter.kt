@@ -1,32 +1,46 @@
 package sk.lubostar.crz.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.list_item_contract.view.*
-import sk.lubostar.crz.R
+import sk.lubostar.crz.databinding.ListItemContractBinding
 import sk.lubostar.crz.network.model.Contract
 
-class ContractsAdapter(private val items :List<Contract>) :RecyclerView.Adapter<ContractViewHolder>() {
+class ContractsAdapter(private val onClickListener: OnClickListener)
+    :ListAdapter<Contract, ContractsAdapter.ContractViewHolder>(DiffCallback){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContractViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_contract, parent, false)
-        return ContractViewHolder(itemView)
-    }
-
-    override fun getItemCount() = items.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ContractViewHolder(
+        ListItemContractBinding.inflate(LayoutInflater.from(parent.context)))
 
     override fun onBindViewHolder(holder: ContractViewHolder, position: Int) {
-        items[position].let {
-            holder.tvSubject.text = it.subject
-            holder.tvDate.text = it.signed_on
+        val item = getItem(position)
+        holder.bind(item)
+        holder.itemView.setOnClickListener{
+            onClickListener.onClick(item)
         }
     }
-}
 
-class ContractViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
-    val tvSubject :TextView = itemView.card_subject
-    val tvDate :TextView = itemView.card_date
+    companion object DiffCallback : DiffUtil.ItemCallback<Contract>() {
+        override fun areItemsTheSame(oldItem: Contract, newItem: Contract): Boolean {
+            return oldItem === newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Contract, newItem: Contract): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+
+    class ContractViewHolder(private val binding: ListItemContractBinding)
+        :RecyclerView.ViewHolder(binding.root){
+        fun bind(contract: Contract){
+            binding.contract = contract
+            binding.executePendingBindings()
+        }
+    }
+
+    class OnClickListener(val clickListener: (contract: Contract) -> Unit) {
+        fun onClick(contract: Contract) = clickListener(contract)
+    }
 }

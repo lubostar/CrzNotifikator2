@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_home.*
+import sk.lubostar.crz.R
 import sk.lubostar.crz.databinding.FragmentHomeBinding
 import sk.lubostar.crz.ui.adapters.ContractsAdapter
+import sk.lubostar.crz.ui.decorators.SpacesItemDecorator
 
 class HomeFragment : Fragment() {
 
@@ -21,23 +23,17 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = homeViewModel
-        binding.recyclerView.adapter = ContractsAdapter(ContractsAdapter.OnClickListener{
-            homeViewModel.displayContractDetails(it)
-        })
+        binding.recyclerView.let {
+            it.addItemDecoration(SpacesItemDecorator(resources
+                .getDimensionPixelSize(R.dimen.list_item_margin)))
+            it.adapter = ContractsAdapter(ContractsAdapter.OnClickListener{ contract ->
+                homeViewModel.displayContractDetails(contract)
+            })
+        }
 
-        homeViewModel.text.observe(this, Observer {
+        homeViewModel.text.observe(viewLifecycleOwner, Observer {
             text_home.text = it
         })
-
-//        homeViewModel.contracts.observe(this, Observer {
-//            if(it.isNotEmpty()){
-//                recyclerView.adapter = ContractsAdapter(it)
-//            }
-//        })
-
-//        runBlocking {
-//            homeViewModel.refreshContracts()
-//        }
 
         return binding.root
     }

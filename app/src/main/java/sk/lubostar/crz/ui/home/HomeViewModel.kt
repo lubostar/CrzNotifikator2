@@ -25,26 +25,18 @@ class HomeViewModel : ViewModel() {
 
     fun getFakeData() :List<Contract>{
         return listOf(
-            Contract(1, "001", "MinV", "Fero",
-                "Prenajom vozidiel", "22. Apr 2020", 2.0, 200.0),
-            Contract(2, "001", "MinV", "Fero",
-                "Prenajom vozidiel 2", "22. Apr 2020", 2.0, 200.0),
-            Contract(3, "001", "MinV", "Fero",
-                "Prenajom vozidiel 3", "22. Apr 2020", 2.0, 200.0),
-            Contract(4, "001", "MinV", "Fero",
-                "Prenajom vozidiel 4", "22. Apr 2020", 2.0, 200.0)
+            Contract(1, "001", "Ministerstvo Vnutra", "Dodavatel",
+                "Prenajom vozidiel", "22. Apr\n2020", 2.0, 200.0),
+            Contract(2, "001", "Ministerstvo Vnutra", "Dodavatel",
+                "Prenajom vozidiel 2", "22. Apr\n2020", 2.0, 200.0),
+            Contract(3, "001", "Ministerstvo Vnutra", "Dodavatel",
+                "Prenajom vozidiel 3", "22. Apr\n2020", 2.0, 200.0),
+            Contract(4, "001", "Ministerstvo Vnutra", "Dodavatel",
+                "Prenajom vozidiel 4", "22. Apr\n2020", 2.0, 200.0)
         )
     }
 
-    fun getEmptyTextVisibility(): Int {
-        contracts.value.let {
-            return if(it == null){
-                VISIBLE
-            }else{
-                if (it.isEmpty()) VISIBLE else GONE
-            }
-        }
-    }
+    fun getEmptyTextVisibility() = if(contracts.value.isNullOrEmpty()) VISIBLE else GONE
 
     fun displayContractDetails(contract: Contract) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

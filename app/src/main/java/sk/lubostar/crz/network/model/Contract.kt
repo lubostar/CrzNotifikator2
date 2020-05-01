@@ -11,4 +11,5 @@ data class Contract(val id: Long,
                     val signed_on: String,
                     val contract_price_amount: Double,
                     val contract_price_total_amount: Double) {
+    fun getPriceAmount() = "$contract_price_amount EUR"
 }

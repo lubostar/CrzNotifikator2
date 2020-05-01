@@ -8,11 +8,11 @@
 
     <androidx.cardview.widget.CardView
         android:elevation="@dimen/card_elevation"
-        android:layout_margin="@dimen/card_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:padding="@dimen/margin_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -21,7 +21,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{contract.signed_on}"
-                android:paddingBottom="@dimen/margin_normal"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:background="@drawable/ic_calendar_icon"
@@ -31,11 +30,47 @@
             <TextView
                 android:id="@+id/card_subject"
                 android:text="@{contract.subject}"
+                android:textSize="18sp"
+                android:paddingStart="@dimen/margin_normal"
+                android:paddingEnd="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
                 android:textStyle="bold"
                 android:layout_toEndOf="@id/card_date"
-                android:layout_margin="@dimen/margin_normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/card_contractor"
+                android:text="@{contract.contracting_authority_name}"
+                android:paddingStart="@dimen/margin_normal"
+                android:paddingEnd="@dimen/margin_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/card_date"
+                android:layout_below="@id/card_subject"
+                />
+
+            <TextView
+                android:id="@+id/card_supplier"
+                android:text="@{contract.supplier_name}"
+                android:paddingStart="@dimen/margin_normal"
+                android:paddingEnd="@dimen/margin_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/card_date"
+                android:layout_below="@id/card_contractor"
+                />
+
+            <TextView
+                android:id="@+id/card_price"
+                android:text="@{contract.getPriceAmount}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="@dimen/margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_date"
+                />
 
         </RelativeLayout>
 

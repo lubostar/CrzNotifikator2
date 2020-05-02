@@ -28,6 +28,17 @@
                 />
 
             <TextView
+                android:id="@+id/card_price"
+                android:text="@{contract.getPriceAmount}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="@dimen/margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_date"
+                />
+
+            <TextView
                 android:id="@+id/card_subject"
                 android:text="@{contract.subject}"
                 android:textSize="18sp"
@@ -61,18 +72,6 @@
                 android:layout_below="@id/card_contractor"
                 />
 
-            <TextView
-                android:id="@+id/card_price"
-                android:text="@{contract.getPriceAmount}"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:padding="@dimen/margin_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_date"
-                />
-
         </RelativeLayout>
-
     </androidx.cardview.widget.CardView>
 </layout>

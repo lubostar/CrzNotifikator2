@@ -14,5 +14,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_search">Send</string>
 
+    <string name="empty_text">The list is empty. Check your internet connection and try again.</string>
+
     <string name="card_calendar_icon_desc">The date when the contract was signed</string>
 </resources>

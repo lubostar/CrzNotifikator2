@@ -6,23 +6,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import sk.lubostar.crz.network.CrzApiService
 import sk.lubostar.crz.network.CrzApiStatus
 import sk.lubostar.crz.network.model.Contract
+import kotlin.collections.ArrayList
 
 class HomeViewModel : ViewModel() {
-    // Create a Coroutine scope using a job to be able to cancel when needed
-    private var viewModelJob = Job()
-
-    // the Coroutine runs using the Main (UI) dispatcher
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<CrzApiStatus>()
+
+    private var disposable: Disposable? = null
 
     // The external immutable LiveData for the request status
     val status: LiveData<CrzApiStatus>
@@ -39,26 +35,31 @@ class HomeViewModel : ViewModel() {
         getContracts()
     }
 
+    private fun onResponse(response: List<Contract>) {
+        _status.value = CrzApiStatus.DONE
+        _contracts.value = response
+    }
+
+    private fun onError(error: Throwable) {
+        _status.value = CrzApiStatus.ERROR
+        _contracts.value = ArrayList()
+        error.printStackTrace()
+    }
+
     private fun getContracts(){
-        coroutineScope.launch {
-            // Get the Deferred object for our Retrofit request
-            val getContractsDeferred = CrzApiService.CrzApi.retrofitService.getContracts()
-            try {
-                _status.value = CrzApiStatus.LOADING
-                // this will run on a thread managed by Retrofit
-                val listResult = getContractsDeferred.await()
-                _status.value = CrzApiStatus.DONE
-                _contracts.value = listResult
-            } catch (e: Exception) {
-                _status.value = CrzApiStatus.ERROR
-                _contracts.value = ArrayList()
-            }
-        }
+        val source = CrzApiService.CrzApi.retrofitService.getContracts()
+        disposable = source
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _status.value = CrzApiStatus.LOADING }
+            .subscribe(
+                {response -> onResponse(response)},
+                {error -> onError(error)})
     }
 
     override fun onCleared() {
         super.onCleared()
-        viewModelJob.cancel()
+        disposable?.dispose()
     }
 
     fun displayContractDetails(contract: Contract) {

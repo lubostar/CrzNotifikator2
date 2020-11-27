@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'org.jetbrains.kotlin.kapt'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.objectbox'
 
 android {
     dataBinding{ enabled=true }
@@ -46,7 +45,13 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:2.7.2"
     implementation 'com.squareup.retrofit2:converter-scalars:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
+    //RxJava adapter
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    //RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -58,6 +63,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+
+    implementation group: 'joda-time', name: 'joda-time', version: '2.10.6'
+
+    implementation "androidx.preference:preference:1.1.1"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
